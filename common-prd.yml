@@ -1,0 +1,9 @@
+qizuo: woaiwojia
+#token验证规则
+token_rules: qizuo
+#上传文件地址
+file_upload_path: ""
+#是否开启swagger
+swagger: true
+#入口
+port_url: "http://localhost:9300/port/"
