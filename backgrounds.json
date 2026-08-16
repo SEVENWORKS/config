@@ -1,0 +1,20 @@
+{
+  "99f52f74-6000-4acf-a081-1652b97b17a0": {
+    "id": "99f52f74-6000-4acf-a081-1652b97b17a0",
+    "bookId": "a5d90d8d-e900-4a9b-bfef-98293ff699af",
+    "title": "1",
+    "description": "1",
+    "tags": [],
+    "extra": {},
+    "relations": [
+      {
+        "id": "ddc073af-f86c-4fb1-bf6a-91a65c1813fa",
+        "type": "包含",
+        "targetId": "610ffdbf-0d00-4196-adc3-b9de0531b035",
+        "note": "11"
+      }
+    ],
+    "createdAt": 1786861471295,
+    "updatedAt": 1786861471295
+  }
+}

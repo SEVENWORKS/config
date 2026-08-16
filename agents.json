@@ -1,0 +1,26 @@
+{
+  "041e744f-3410-43e5-b323-93fafdfcf25e": {
+    "id": "041e744f-3410-43e5-b323-93fafdfcf25e",
+    "name": "人物创造师",
+    "description": "",
+    "instructions": "",
+    "runtime": "claude",
+    "model": "deepseek-v4-flash",
+    "customArgs": [],
+    "skillIds": [],
+    "createdAt": 1786775341614,
+    "updatedAt": 1786775380359
+  },
+  "f0f2d282-1504-4a60-ac1c-c45ada0dbd79": {
+    "id": "f0f2d282-1504-4a60-ac1c-c45ada0dbd79",
+    "name": "地图构画师",
+    "description": "",
+    "instructions": "",
+    "runtime": "claude",
+    "model": "deepseek-v4-flash",
+    "customArgs": [],
+    "skillIds": [],
+    "createdAt": 1786713519925,
+    "updatedAt": 1786715856487
+  }
+}
