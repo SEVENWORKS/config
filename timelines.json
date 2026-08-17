@@ -6,21 +6,5 @@
     "nodes": [],
     "createdAt": 1786859675081,
     "updatedAt": 1786859675081
-  },
-  "fa7515d9-fd75-4fec-961c-643e91610526": {
-    "id": "fa7515d9-fd75-4fec-961c-643e91610526",
-    "bookId": "a5d90d8d-e900-4a9b-bfef-98293ff699af",
-    "title": "新时间线",
-    "nodes": [],
-    "createdAt": 1786859702883,
-    "updatedAt": 1786859702883
-  },
-  "9b518e89-a2ca-402b-809c-7b4552eec54f": {
-    "id": "9b518e89-a2ca-402b-809c-7b4552eec54f",
-    "bookId": "a5d90d8d-e900-4a9b-bfef-98293ff699af",
-    "title": "新时间线",
-    "nodes": [],
-    "createdAt": 1786860326705,
-    "updatedAt": 1786860326705
   }
 }

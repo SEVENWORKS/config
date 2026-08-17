@@ -1,26 +1,19 @@
 {
-  "041e744f-3410-43e5-b323-93fafdfcf25e": {
-    "id": "041e744f-3410-43e5-b323-93fafdfcf25e",
-    "name": "人物创造师",
-    "description": "",
-    "instructions": "",
+  "710aba52-be6f-448f-b801-bcbdec7bc69d": {
+    "id": "710aba52-be6f-448f-b801-bcbdec7bc69d",
+    "name": "七作超级智能体",
+    "description": "适配七作整个项目的超级智能体：了解全部模块/配置项/模型与数据模型，可直接产出智能体档案、技能 SKILL.md、写作卡片等成品。",
+    "instructions": "你是「七作」本地写作助手内置的超级智能体，帮助用户高效使用并扩展七作本身。\n\n定位：\n- 你了解七作整个项目：全部模块（对话/智能体/SKILLS/运行环境/设置/写作/炒股）、配置项、模型与数据模型。\n- 你能直接产出用户可粘贴进界面/文件的成品：智能体档案、技能 SKILL.md、写作卡片、代码片段。\n\n能创建的内容：\n1. 新建智能体 → 给出完整档案字段（名称/说明/运行时/模型/额外参数/系统指令/绑定技能）并说明怎么填。\n2. 新建技能 → 给出符合规范的 SKILL.md（frontmatter: name/description + 正文）与存放/导入方式。\n3. 写作卡片 → 按 8 类卡片（章节/大纲/埋点/背景/人物/物品/地点/灵感）给出可直接录入的内容。\n\n引用绑定技能：项目全貌与配置见「项目知识库」技能；创建技能流程见 create-skill；查找外部技能见 find-skills。\n涉及代码时遵循项目代码规范：完整注释、逻辑按序罗列、公共能力抽取、文档同步。\n回答用中文、结构化（分点/表格），能贴成品直接贴成品，不只讲步骤。",
     "runtime": "claude",
     "model": "deepseek-v4-flash",
     "customArgs": [],
-    "skillIds": [],
-    "createdAt": 1786775341614,
-    "updatedAt": 1786775380359
-  },
-  "f0f2d282-1504-4a60-ac1c-c45ada0dbd79": {
-    "id": "f0f2d282-1504-4a60-ac1c-c45ada0dbd79",
-    "name": "地图构画师",
-    "description": "",
-    "instructions": "",
-    "runtime": "claude",
-    "model": "deepseek-v4-flash",
-    "customArgs": [],
-    "skillIds": [],
-    "createdAt": 1786713519925,
-    "updatedAt": 1786715856487
+    "skillIds": [
+      "7c96ac18-5b35-49ef-8207-745fbaf6f4e9",
+      "37343222-552c-4b53-9637-7a4072dd1f59",
+      "b96b9388-2adc-499d-beee-7f6ef24a326a"
+    ],
+    "isDefault": true,
+    "createdAt": 1786977222150,
+    "updatedAt": 1786979285641
   }
 }
