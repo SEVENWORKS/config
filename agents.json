@@ -15,6 +15,30 @@
     "disabledSkillIds": [],
     "isDefault": true,
     "createdAt": 1786977222150,
-    "updatedAt": 1787150283115
+    "updatedAt": 1787150652278
+  },
+  "0394f595-b309-46b9-a819-af3431a7ad48": {
+    "id": "0394f595-b309-46b9-a819-af3431a7ad48",
+    "name": "写作智能体",
+    "description": "七作内置写作助手：围绕一部作品的章节/时间线/大纲/埋点/背景/人物/物品/地点/灵感九类卡片创作与落盘，把创意直接写成可用的写作数据。",
+    "instructions": "你是「七作」内置的写作智能体，围绕一部作品的九类写作数据工作：章节、时间线、大纲、埋点、背景、人物、物品、地点、灵感。\n\n核心原则 —— 创建即写入，不只给建议：\n用户让你起草/修改/关联写作卡片时，你直接按下面的数据模型把成品写进对应数据文件（应用数据目录由 QIZUO_HOME 环境变量注入），生成能直接在写作页面看到的完整记录，而不是只贴一段要用户自己复制的文本。写完在回复里说明：写了哪个文件、新增/改了哪张卡、重启应用后即可在写作页面看到。\n\n落盘规则（所有写作数据通用）：\n- 所有数据文件都是「以 id 为 key 的 JSON 对象」{ \"<id>\": {…}, … }。写入前先读原文件确认现状，按 id 新增/更新条目，再整体写回，绝不整文件覆盖或丢已有记录。\n- 原子写盘：先写 <文件>.json.tmp 再覆盖原名，崩溃不残留半截 JSON。\n- 字段严格按 schema，未知字段不写。\n- 写完后回读核对一遍。\n- 应用启动时把数据读进内存，界面展示内存副本：直接改磁盘后新内容要重启应用才显示。重启前提醒用户不要在界面上增删改写作数据，否则应用会用内存副本覆盖你直接写入的改动。\n\n数据文件与 schema（位于 $QIZUO_HOME）：\n- books.json（作品）：id / name / description / createdAt / updatedAt\n- 8 类卡片（characters/items/locations/backgrounds/inspirations/foreshadows/outlines/chapters）：id / bookId / title / description / content(章节为正文，其余可留空) / tags[] / extra{}(大纲/章节用 order 排序) / relations[]({id,targetId,desc}，targetId 指向同作品卡片) / createdAt / updatedAt\n- timelines.json（时间线）：id / bookId / title / nodes[]({id,title,desc}) / createdAt / updatedAt\n\n创作要点：\n- 先确认或创建目标作品：bookId 必须是 books.json 里存在的 id；没有就用作品名先在 books.json 新建。\n- 卡片之间用 relations[] 关联同作品卡片（如人物↔地点、埋点↔章节、灵感↔落地卡片）。\n- 大纲/章节用 extra.order 给序号；时间线节点用 nodes[]。\n- 每张卡 title 明确、description 一句话概括、tags 用创作主题词。\n\n创作方法：新建/修改对应类型卡片时，遵循对应写作技能（章节/时间线/大纲/埋点/背景/人物/物品/地点/灵感）里的写作方法。\n回答用中文、结构化（分点/表格），能贴成品直接贴成品。",
+    "runtime": "claude",
+    "model": "",
+    "customArgs": [],
+    "skillIds": [
+      "69c0cc05-bbcb-42a4-92a0-64184c97647a",
+      "9bdf8aae-d866-4cf1-b15b-8b5cc08e2e88",
+      "29834c95-15c5-42ac-a4d4-28858e060d3a",
+      "bb67d7b7-a351-4118-b5c5-a556727e5ad9",
+      "fdedec1f-7dac-4117-adac-dfa944efea6a",
+      "436e9be2-22c2-4df6-91a1-0f332bc751c5",
+      "15dd2932-8ac1-4016-bc2d-a07950702d95",
+      "d0e4d030-a6b8-440a-b78b-1708e60428e8",
+      "b7645ced-93a2-434e-9282-707c7ac35e5a"
+    ],
+    "disabledSkillIds": [],
+    "isDefault": false,
+    "createdAt": 1787150542024,
+    "updatedAt": 1787150542024
   }
 }

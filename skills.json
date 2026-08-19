@@ -25,5 +25,86 @@
     "files": [],
     "createdAt": 1786977222147,
     "updatedAt": 1787150283111
+  },
+  "69c0cc05-bbcb-42a4-92a0-64184c97647a": {
+    "id": "69c0cc05-bbcb-42a4-92a0-64184c97647a",
+    "name": "章节",
+    "description": "用于创作与修改作品的章节正文。涵盖章节结构、场景节奏、视角/钩子/转场，以及把章节落盘到 chapters.json 的写入规范。当用户要求写正文、规划章节顺序或把大纲拆成章节时使用。",
+    "content": "---\nname: write-chapter\ndescription: 用于创作与修改作品的章节正文。涵盖章节结构、场景节奏、视角/钩子/转场，以及把章节落盘到 chapters.json 的写入规范。当用户要求写正文、规划章节顺序或把大纲拆成章节时使用。\n---\n\n# 章节写作（chapters.json）\n\n用于为一部作品起草、修改、重组章节正文。\n\n## 何时使用\n\n- 用户要写/改某章正文\n- 需要按顺序规划章节（第几章到第几章）\n- 需要把已有大纲拆成具体章节\n- 需要给章节排序或关联角色/地点/伏笔\n\n## 数据模型\n\nchapters.json 条目（id 为 key 的 JSON 对象）：\n\n| 字段 | 说明 |\n|---|---|\n| id | UUID |\n| bookId | 所属作品 id（必须存在于 books.json） |\n| title | 章节标题 |\n| description | 一句话概括本章内容 |\n| content | 章节正文（富文本/纯文本均可） |\n| tags | 主题词数组 |\n| extra | 对象；排序用 extra.order（数字） |\n| relations | [{id,targetId,desc}]，关联同作品卡片（人物/地点/埋点…） |\n| createdAt / updatedAt | 毫秒时间戳 |\n\n## 写入规范\n\n1. 先读 chapters.json 和 books.json，确认 bookId 与现有章节、已有序号。\n2. 新增：保留现有条目，只加新 id；更新：按 id 整体替换该条。绝不整文件覆盖。\n3. 先写 chapters.json.tmp 再覆盖原名，原子落盘。\n4. 写完回读核对字段完整、序号无冲突。\n\n## 写作方法\n\n- 章节标题：用一句话提炼本章事件或意象，避免纯编号式「第一章」（编号放 extra.order）。\n- 开场钩子：前 1-2 段建立冲突或悬念，别从起床开始写。\n- 场景节奏：每章 2-4 个场景，场景切换给清晰转场（时间/地点变化）。\n- 章末钩子：留悬念/转折/情绪反差驱动读者翻页。\n- 视角统一：保持单一 POV 或明确标注切换，避免视角混乱。\n- 章均字数建议 3000-5000 字（按平台风格调整）。\n- 用 relations 关联本章出场的角色、发生的地点、埋下或兑现的伏笔。\n\n## 示例\n\n```\n{\n  \"id\": \"<uuid>\",\n  \"bookId\": \"<book-uuid>\",\n  \"title\": \"雨夜来客\",\n  \"description\": \"沈砚在废弃车站接到神秘信件，卷入旧案。\",\n  \"content\": \"雨在凌晨三点砸下来。沈砚推开车站铁门……\",\n  \"tags\": [\"悬疑\", \"引入\"],\n  \"extra\": { \"order\": 3 },\n  \"relations\": [{ \"id\": \"<rel-uuid>\", \"targetId\": \"<char-uuid>\", \"desc\": \"主角沈砚出场\" }],\n  \"createdAt\": 0,\n  \"updatedAt\": 0\n}\n```\n",
+    "files": [],
+    "createdAt": 1787150542024,
+    "updatedAt": 1787150542024
+  },
+  "9bdf8aae-d866-4cf1-b15b-8b5cc08e2e88": {
+    "id": "9bdf8aae-d866-4cf1-b15b-8b5cc08e2e88",
+    "name": "时间线",
+    "description": "用于构建与维护作品的时间线。把故事事件按时间顺序编排，处理倒叙/插叙/时间跳跃，落盘到 timelines.json 的写入规范。当用户要梳理编年表、核对事件先后或规划时间线时使用。",
+    "content": "---\nname: write-timeline\ndescription: 用于构建与维护作品的时间线。把故事事件按时间顺序编排，处理倒叙/插叙/时间跳跃，落盘到 timelines.json 的写入规范。当用户要梳理编年表、核对事件先后或规划时间线时使用。\n---\n\n# 时间线写作（timelines.json）\n\n用于为作品建立时间线，保证事件先后与因果不矛盾。\n\n## 何时使用\n\n- 用户要梳理故事时间线/编年表\n- 需要核对事件先后、角色年龄、季节/历法设定\n- 需要规划倒叙、插叙、时间跳跃\n\n## 数据模型\n\ntimelines.json 条目（id 为 key 的 JSON 对象）：\n\n| 字段 | 说明 |\n|---|---|\n| id | UUID |\n| bookId | 所属作品 id |\n| title | 时间线名称 |\n| nodes | [{id, title, desc}] 事件节点数组，数组顺序即时间顺序 |\n| createdAt / updatedAt | 毫秒时间戳 |\n\n## 写入规范\n\n1. 先读 timelines.json 和 books.json，确认 bookId 与已有时间线。\n2. 新增：保留现有条目，只加新 id；更新：按 id 整体替换，nodes 整体写回。\n3. 先写 timelines.json.tmp 再覆盖原名，原子落盘。\n4. 写完回读核对节点顺序与内容。\n\n## 写作方法\n\n- 先排主干事件（起因→发展→高潮→结局），再插入支线，保证因果链成立。\n- 每个节点：title 为事件名，desc 交代时间点（年/月/日/时刻）、人物、地点、结果。\n- 倒叙/插叙在 desc 里标注，如「（倒叙）三年前」。\n- 定期回读节点列表检查时间矛盾：年龄、季节、历法、行动耗时。\n- 一个作品可建多条时间线（主线/支线/角色线），title 区分。\n- 与章节对应：节点 desc 可标注对应章节 title，便于双向检索。\n\n## 示例\n\n```\n{\n  \"id\": \"<uuid>\",\n  \"bookId\": \"<book-uuid>\",\n  \"title\": \"主线时间线\",\n  \"nodes\": [\n    { \"id\": \"<n1>\", \"title\": \"引子：雨夜来信\", \"desc\": \"2026 年 3 月 15 日深夜，沈砚收到匿名信。\" },\n    { \"id\": \"<n2>\", \"title\": \"旧案重启\", \"desc\": \"三天后，沈砚前往废弃车站调查。\" }\n  ],\n  \"createdAt\": 0,\n  \"updatedAt\": 0\n}\n```\n",
+    "files": [],
+    "createdAt": 1787150542024,
+    "updatedAt": 1787150542024
+  },
+  "29834c95-15c5-42ac-a4d4-28858e060d3a": {
+    "id": "29834c95-15c5-42ac-a4d4-28858e060d3a",
+    "name": "大纲",
+    "description": "用于创作与调整作品大纲。从一句话梗概到分幕分章节奏，落盘到 outlines.json 的写入规范。当用户要搭整体结构、规划三幕/起承转合或细化到章时使用。",
+    "content": "---\nname: write-outline\ndescription: 用于创作与调整作品大纲。从一句话梗概到分幕分章节奏，落盘到 outlines.json 的写入规范。当用户要搭整体结构、规划三幕/起承转合或细化到章时使用。\n---\n\n# 大纲写作（outlines.json）\n\n用于把创意扩展成结构化的大纲。\n\n## 何时使用\n\n- 用户要搭作品整体结构\n- 需要三幕/起承转合/章节节奏规划\n- 需要把大纲细化到章，或反向从章节收敛成大纲\n- 需要大纲条目之间排序\n\n## 数据模型\n\noutlines.json 条目（id 为 key 的 JSON 对象）：\n\n| 字段 | 说明 |\n|---|---|\n| id | UUID |\n| bookId | 所属作品 id |\n| title | 大纲标题 |\n| description | 一句话概括本条大纲 |\n| content | 大纲正文（Markdown/结构化文本） |\n| tags | 阶段/类型词（如「三幕」「开篇」「终章」） |\n| extra | 对象；排序用 extra.order（数字） |\n| relations | 关联同作品卡片（对应章节、关键角色/伏笔） |\n| createdAt / updatedAt | 毫秒时间戳 |\n\n## 写入规范\n\n1. 先读 outlines.json 和 books.json，确认 bookId 与已有条目、序号。\n2. 新增：保留现有条目，只加新 id；更新：按 id 整体替换。\n3. 先写 outlines.json.tmp 再覆盖原名，原子落盘。\n4. 写完回读核对序号与层级。\n\n## 写作方法\n\n- 从高到低逐层细化：一句话梗概 → 三幕结构 → 每幕关键事件 → 分章要点。\n- content 用清晰层级：## 幕 / ### 章。\n- 每章要点写四项：目标、冲突、转折、章末钩子。\n- 大纲与章节保持同步：改章节后回查大纲，避免漂移。\n- 常用结构模板：三幕式、英雄之旅、起承转合；tag 里标注所用模板。\n\n## 示例\n\n```\n{\n  \"id\": \"<uuid>\",\n  \"bookId\": \"<book-uuid>\",\n  \"title\": \"三幕式大纲\",\n  \"description\": \"全作三幕结构，分章要点。\",\n  \"content\": \"## 第一幕（第 1-5 章）\\n### 第 1 章：雨夜来客\\n目标：引入沈砚与旧案；冲突：信件揭穿往事；转折：哥哥失踪另有隐情；钩子：废弃车站的地图。\",\n  \"tags\": [\"三幕\"],\n  \"extra\": { \"order\": 1 },\n  \"relations\": [],\n  \"createdAt\": 0,\n  \"updatedAt\": 0\n}\n```\n",
+    "files": [],
+    "createdAt": 1787150542024,
+    "updatedAt": 1787150542024
+  },
+  "bb67d7b7-a351-4118-b5c5-a556727e5ad9": {
+    "id": "bb67d7b7-a351-4118-b5c5-a556727e5ad9",
+    "name": "埋点",
+    "description": "用于管理作品的伏笔与回收。记录埋下与兑现的线索，保证前后呼应，落盘到 foreshadows.json 的写入规范。当用户要埋新线索、检查回收或设计误导时使用。",
+    "content": "---\nname: write-foreshadow\ndescription: 用于管理作品的伏笔与回收。记录埋下与兑现的线索，保证前后呼应，落盘到 foreshadows.json 的写入规范。当用户要埋新线索、检查回收或设计误导时使用。\n---\n\n# 埋点写作（foreshadows.json）\n\n用于追踪作品中的伏笔：什么时候埋、什么时候收。\n\n## 何时使用\n\n- 用户要埋一条新线索/伏笔\n- 需要检查某线索是否已回收、哪些线还悬着\n- 需要设计误导（red herring）与前后呼应\n- 需要把伏笔关联到具体章节/角色/物品\n\n## 数据模型\n\nforeshadows.json 条目（id 为 key 的 JSON 对象）：\n\n| 字段 | 说明 |\n|---|---|\n| id | UUID |\n| bookId | 所属作品 id |\n| title | 伏笔名称 |\n| description | 一句话说明伏笔内容与作用 |\n| content | 详情：埋设位置、回收设计、线索外观 |\n| tags | 类型词（「人物」「道具」「预言」等） |\n| extra | 对象；可放 state（planted / paidoff） |\n| relations | 关联同作品卡片（埋设章节、回收章节、涉及角色/物品） |\n| createdAt / updatedAt | 毫秒时间戳 |\n\n## 写入规范\n\n1. 先读 foreshadows.json 和 books.json，确认 bookId 与已有伏笔。\n2. 新增：保留现有条目，只加新 id；更新：按 id 整体替换。\n3. 先写 foreshadows.json.tmp 再覆盖原名，原子落盘。\n4. 写完回读核对「埋点—回收」链条完整。\n\n## 写作方法\n\n- 每条伏笔记录：埋点（第几章/场景）、线索外观、预期回收点。\n- 用 relations 把伏笔关联到埋设章节与回收章节，形成追踪链。\n- 定期盘点：只埋不收的线、悬置过久的高危伏笔。\n- 好伏笔特征：首次出现不突兀、回收时恍然大悟、可被读者倒推。\n- 善用误导：给读者一个看似合理的解释，最后反转。\n- 回收设计写进 content，避免忘收。\n\n## 示例\n\n```\n{\n  \"id\": \"<uuid>\",\n  \"bookId\": \"<book-uuid>\",\n  \"title\": \"断头钥匙\",\n  \"description\": \"沈砚捡到的半截钥匙，指向哥哥失踪的真相。\",\n  \"content\": \"埋点：第 2 章车站铁门边；回收：第 9 章发现配对的另一半。\",\n  \"tags\": [\"道具\", \"主线\"],\n  \"extra\": { \"state\": \"planted\" },\n  \"relations\": [{ \"id\": \"<rel-uuid>\", \"targetId\": \"<chapter-uuid>\", \"desc\": \"第 2 章埋设\" }],\n  \"createdAt\": 0,\n  \"updatedAt\": 0\n}\n```\n",
+    "files": [],
+    "createdAt": 1787150542024,
+    "updatedAt": 1787150542024
+  },
+  "fdedec1f-7dac-4117-adac-dfa944efea6a": {
+    "id": "fdedec1f-7dac-4117-adac-dfa944efea6a",
+    "name": "背景",
+    "description": "用于创作与维护作品的世界观背景。设定历史、规则、势力、文化等，落盘到 backgrounds.json 的写入规范。当用户要设定世界观、历史、力量体系或补充势力文化时使用。",
+    "content": "---\nname: write-background\ndescription: 用于创作与维护作品的世界观背景。设定历史、规则、势力、文化等，落盘到 backgrounds.json 的写入规范。当用户要设定世界观、历史、力量体系或补充势力文化时使用。\n---\n\n# 背景写作（backgrounds.json）\n\n用于建立作品的世界观与背景设定。\n\n## 何时使用\n\n- 用户要设定世界观、历史、力量体系\n- 需要补充势力/阵营/文化/风俗细节\n- 需要约束设定避免前后矛盾\n- 需要把背景挂到受影响的人物/地点/物品上\n\n## 数据模型\n\nbackgrounds.json 条目（id 为 key 的 JSON 对象）：\n\n| 字段 | 说明 |\n|---|---|\n| id | UUID |\n| bookId | 所属作品 id |\n| title | 背景条目标题 |\n| description | 一句话概括该设定 |\n| content | 设定详情 |\n| tags | 领域词（「历史」「规则」「势力」） |\n| extra | 对象 |\n| relations | 关联相关卡片（地点/人物/物品） |\n| createdAt / updatedAt | 毫秒时间戳 |\n\n## 写入规范\n\n1. 先读 backgrounds.json 和 books.json，确认 bookId 与已有条目。\n2. 新增：保留现有条目，只加新 id；更新：按 id 整体替换。\n3. 先写 backgrounds.json.tmp 再覆盖原名，原子落盘。\n4. 写完回读核对设定无自相矛盾。\n\n## 写作方法\n\n- 按主题分条：世界历史、力量体系、社会结构、文化风俗、经济地理。\n- 每条背景写三件事：是什么 + 为什么 + 对故事的影响。\n- 设定服务于剧情：只写会影响到故事的内容，避免「设定文档膨胀」。\n- 魔法/科技体系要立规则：来源、代价、限制，保证不出戏。\n- 用 relations 把背景挂到受影响的人物、地点、物品上。\n\n## 示例\n\n```\n{\n  \"id\": \"<uuid>\",\n  \"bookId\": \"<book-uuid>\",\n  \"title\": \"灵力体系\",\n  \"description\": \"本作灵力源自「星屑」，施法需支付记忆。\",\n  \"content\": \"星屑是古老陨石散落的能量。凡人可通过仪式吸收，但每次施法会磨损一段记忆。灵力越强，记忆越稀薄。\",\n  \"tags\": [\"规则\", \"力量体系\"],\n  \"extra\": {},\n  \"relations\": [{ \"id\": \"<rel-uuid>\", \"targetId\": \"<char-uuid>\", \"desc\": \"主角是灵力者\" }],\n  \"createdAt\": 0,\n  \"updatedAt\": 0\n}\n```\n",
+    "files": [],
+    "createdAt": 1787150542024,
+    "updatedAt": 1787150542024
+  },
+  "436e9be2-22c2-4df6-91a1-0f332bc751c5": {
+    "id": "436e9be2-22c2-4df6-91a1-0f332bc751c5",
+    "name": "人物",
+    "description": "用于创作与维护作品人物档案。身份、性格、动机、成长弧线，落盘到 characters.json 的写入规范。当用户要新建角色、深化动机弧线或核对言行一致性时使用。",
+    "content": "---\nname: write-character\ndescription: 用于创作与维护作品人物档案。身份、性格、动机、成长弧线，落盘到 characters.json 的写入规范。当用户要新建角色、深化动机弧线或核对言行一致性时使用。\n---\n\n# 人物写作（characters.json）\n\n用于建立、丰满作品角色。\n\n## 何时使用\n\n- 用户要新建角色\n- 需要深化角色动机/弧线/关系\n- 需要核对角色言行一致性、复用人物细节\n- 需要把角色关联到地点/物品/章节\n\n## 数据模型\n\ncharacters.json 条目（id 为 key 的 JSON 对象）：\n\n| 字段 | 说明 |\n|---|---|\n| id | UUID |\n| bookId | 所属作品 id |\n| title | 角色名 |\n| description | 一句话定位（如「主角的亦敌亦友」） |\n| content | 档案详情：身份/外貌/性格/动机/弧线/口头禅 |\n| tags | 定位词（「主角」「反派」「配角」） |\n| extra | 对象 |\n| relations | 关联同作品卡片（所在地点、持有物品、相关伏笔） |\n| createdAt / updatedAt | 毫秒时间戳 |\n\n## 写入规范\n\n1. 先读 characters.json 和 books.json，确认 bookId 与已有角色。\n2. 新增：保留现有条目，只加新 id；更新：按 id 整体替换。\n3. 先写 characters.json.tmp 再覆盖原名，原子落盘。\n4. 写完回读核对档案字段完整。\n\n## 写作方法\n\n- 基础：姓名、身份、外貌、年龄。\n- 性格：用 3-5 个关键词 + 具体行为表现（不只形容词）。\n- 动机：想要什么（表层目标）/ 真正需要什么（深层需求）/ 害怕什么。\n- 弧线：起点状态 → 转折 → 终点状态。\n- 关系：与其它角色的关系/恩怨，用 relations 链接。\n- 一致性：写清口癖、口头禅、小动作，供后续章节复用。\n- description 一句话定位，方便列表里一眼认出。\n\n## 示例\n\n```\n{\n  \"id\": \"<uuid>\",\n  \"bookId\": \"<book-uuid>\",\n  \"title\": \"沈砚\",\n  \"description\": \"主角，前刑警，记忆力超群。\",\n  \"content\": \"外貌：三十出头，左眉一道旧疤。性格：冷硬、戒心重，但见不得弱者受欺。动机：想查清哥哥失踪的真相。弧线：从独来独往到学会信任搭档。口头禅：「证据不会说谎。」\",\n  \"tags\": [\"主角\"],\n  \"extra\": {},\n  \"relations\": [{ \"id\": \"<rel-uuid>\", \"targetId\": \"<loc-uuid>\", \"desc\": \"常驻警局档案室\" }],\n  \"createdAt\": 0,\n  \"updatedAt\": 0\n}\n```\n",
+    "files": [],
+    "createdAt": 1787150542024,
+    "updatedAt": 1787150542024
+  },
+  "15dd2932-8ac1-4016-bc2d-a07950702d95": {
+    "id": "15dd2932-8ac1-4016-bc2d-a07950702d95",
+    "name": "物品",
+    "description": "用于创作与维护作品物品设定。道具、法器、信物及其来历与作用，落盘到 items.json 的写入规范。当用户要设计道具、记录物品规则或把物品挂到角色剧情时使用。",
+    "content": "---\nname: write-item\ndescription: 用于创作与维护作品物品设定。道具、法器、信物及其来历与作用，落盘到 items.json 的写入规范。当用户要设计道具、记录物品规则或把物品挂到角色剧情时使用。\n---\n\n# 物品写作（items.json）\n\n用于建立作品中的重要物品。\n\n## 何时使用\n\n- 用户要设计道具/法器/信物\n- 需要记录物品来历与功能规则\n- 需要把物品与角色、剧情、伏笔挂钩\n\n## 数据模型\n\nitems.json 条目（id 为 key 的 JSON 对象）：\n\n| 字段 | 说明 |\n|---|---|\n| id | UUID |\n| bookId | 所属作品 id |\n| title | 物品名 |\n| description | 一句话说明物品是什么、有什么用 |\n| content | 详情：外形/来历/能力/限制/剧情作用 |\n| tags | 类型词（「法器」「信物」「武器」） |\n| extra | 对象 |\n| relations | 关联持有者、出处地点、相关伏笔/章节 |\n| createdAt / updatedAt | 毫秒时间戳 |\n\n## 写入规范\n\n1. 先读 items.json 和 books.json，确认 bookId 与已有物品。\n2. 新增：保留现有条目，只加新 id；更新：按 id 整体替换。\n3. 先写 items.json.tmp 再覆盖原名，原子落盘。\n4. 写完回读核对规则与描述一致。\n\n## 写作方法\n\n- 物品三要素：外形（可见特征）、能力/作用（规则化）、来历（谁造的/怎么来的）。\n- 重要物品立限制条件，避免成为万能工具。\n- 把物品与情感绑定（信物、遗物），增强读者记忆点。\n- 与伏笔联动：物品的来历往往是回收点，用 relations 挂伏笔。\n- 用 relations 挂到持有角色、出现地点。\n\n## 示例\n\n```\n{\n  \"id\": \"<uuid>\",\n  \"bookId\": \"<book-uuid>\",\n  \"title\": \"断头钥匙\",\n  \"description\": \"半截黄铜钥匙，材质古旧，断口整齐。\",\n  \"content\": \"外形：钥匙柄刻有一只衔尾蛇。来历：沈砚哥哥失踪前寄回。作用：与另半截配对后可打开车站密室的锁。限制：只能辨认特定的那扇门。\",\n  \"tags\": [\"信物\", \"主线道具\"],\n  \"extra\": {},\n  \"relations\": [{ \"id\": \"<rel-uuid>\", \"targetId\": \"<char-uuid>\", \"desc\": \"持有者沈砚\" }],\n  \"createdAt\": 0,\n  \"updatedAt\": 0\n}\n```\n",
+    "files": [],
+    "createdAt": 1787150542024,
+    "updatedAt": 1787150542024
+  },
+  "d0e4d030-a6b8-440a-b78b-1708e60428e8": {
+    "id": "d0e4d030-a6b8-440a-b78b-1708e60428e8",
+    "name": "地点",
+    "description": "用于创作与维护作品地点设定。场景环境、氛围、故事功能，落盘到 locations.json 的写入规范。当用户要设定场景城市、记录氛围或保证跨章节地点一致时使用。",
+    "content": "---\nname: write-location\ndescription: 用于创作与维护作品地点设定。场景环境、氛围、故事功能，落盘到 locations.json 的写入规范。当用户要设定场景城市、记录氛围或保证跨章节地点一致时使用。\n---\n\n# 地点写作（locations.json）\n\n用于建立作品中的地点与场景。\n\n## 何时使用\n\n- 用户要设定场景/城市/建筑\n- 需要记录地点的氛围与故事功能\n- 需要保证跨章节地点描述一致\n- 需要把地点关联到角色、物品、关键剧情\n\n## 数据模型\n\nlocations.json 条目（id 为 key 的 JSON 对象）：\n\n| 字段 | 说明 |\n|---|---|\n| id | UUID |\n| bookId | 所属作品 id |\n| title | 地点名 |\n| description | 一句话说明地点特征 |\n| content | 详情：地理/环境/氛围/在此发生的关键事件 |\n| tags | 类型词（「城市」「密室」「遗迹」） |\n| extra | 对象 |\n| relations | 关联常驻角色、相关物品、发生关键剧情的章节 |\n| createdAt / updatedAt | 毫秒时间戳 |\n\n## 写入规范\n\n1. 先读 locations.json 和 books.json，确认 bookId 与已有地点。\n2. 新增：保留现有条目，只加新 id；更新：按 id 整体替换。\n3. 先写 locations.json.tmp 再覆盖原名，原子落盘。\n4. 写完回读核对空间与氛围设定一致。\n\n## 写作方法\n\n- 每处地点记三样：可见环境（视觉/声音/气味）、氛围基调、故事功能（战场/避风港/囚笼）。\n- 大场景写「常驻细节」建立空间感，重复出场保持细节一致。\n- 地点即情绪：用环境映射角色心境。\n- 关键地点标注「在此发生」的重大事件，便于回查。\n- 用 relations 挂常驻角色、相关物品、关键章节。\n\n## 示例\n\n```\n{\n  \"id\": \"<uuid>\",\n  \"bookId\": \"<book-uuid>\",\n  \"title\": \"废弃车站\",\n  \"description\": \"城郊废弃三站台，沈砚调查的核心场景。\",\n  \"content\": \"环境：铁轨生锈，站牌字迹模糊，雨夜常有积水反光。氛围：压抑、陈旧、藏着秘密。故事功能：密室与关键线索所在地。关键事件：第 2 章捡到断头钥匙，第 9 章密室开启。\",\n  \"tags\": [\"关键场景\"],\n  \"extra\": {},\n  \"relations\": [{ \"id\": \"<rel-uuid>\", \"targetId\": \"<char-uuid>\", \"desc\": \"沈砚常来调查\" }],\n  \"createdAt\": 0,\n  \"updatedAt\": 0\n}\n```\n",
+    "files": [],
+    "createdAt": 1787150542024,
+    "updatedAt": 1787150542024
+  },
+  "b7645ced-93a2-434e-9282-707c7ac35e5a": {
+    "id": "b7645ced-93a2-434e-9282-707c7ac35e5a",
+    "name": "灵感",
+    "description": "用于捕捉与扩展作品灵感。点子、片段、意象、对话火花，落盘到 inspirations.json 的写入规范。当用户想快速记录点子、整理素材或围绕主题发散联想时使用。",
+    "content": "---\nname: write-inspiration\ndescription: 用于捕捉与扩展作品灵感。点子、片段、意象、对话火花，落盘到 inspirations.json 的写入规范。当用户想快速记录点子、整理素材或围绕主题发散联想时使用。\n---\n\n# 灵感写作（inspirations.json）\n\n用于记录与孵化创作灵感。\n\n## 何时使用\n\n- 用户想快速记录一个点子/片段/对话火花\n- 需要把零散灵感整理成可用素材\n- 需要围绕某主题发散联想\n- 需要把灵感关联到它孵化出的正式卡片\n\n## 数据模型\n\ninspirations.json 条目（id 为 key 的 JSON 对象）：\n\n| 字段 | 说明 |\n|---|---|\n| id | UUID |\n| bookId | 所属作品 id |\n| title | 灵感标题 |\n| description | 一句话概括灵感核心 |\n| content | 灵感详情：场景/对话/意象/设定火花 |\n| tags | 主题词 |\n| extra | 对象 |\n| relations | 可关联后续落地的卡片（人物/地点/章节…） |\n| createdAt / updatedAt | 毫秒时间戳 |\n\n## 写入规范\n\n1. 先读 inspirations.json 和 books.json，确认 bookId 与已有灵感。\n2. 新增：保留现有条目，只加新 id；更新：按 id 整体替换。\n3. 先写 inspirations.json.tmp 再覆盖原名，原子落盘。\n4. 写完回读核对标题清晰、可检索。\n\n## 写作方法\n\n- 记录优先于整理：先原样记下火花，别因追求完整而流失。\n- 每条灵感补三问：它适合哪个类型？能挂到哪个已有卡片？触发什么情绪？\n- 用 tags 归堆（「对话」「意象」「反转」），便于检索。\n- 灵感成熟后，用 relations 关联到它孵化出的正式卡片，形成链路。\n- 定期回访灵感库，把「弃之可惜」的点子缝合进故事。\n\n## 示例\n\n```\n{\n  \"id\": \"<uuid>\",\n  \"bookId\": \"<book-uuid>\",\n  \"title\": \"开场意象：雨夜站台\",\n  \"description\": \"以废弃站台的积水倒影开场，倒影里多出一个人。\",\n  \"content\": \"沈砚低头看站台积水，倒影里除了自己，还有一个戴帽人影——抬头却空无一人。适合悬疑开篇，可做第一幕引子。\",\n  \"tags\": [\"意象\", \"开篇\"],\n  \"extra\": {},\n  \"relations\": [{ \"id\": \"<rel-uuid>\", \"targetId\": \"<loc-uuid>\", \"desc\": \"指向废弃车站\" }],\n  \"createdAt\": 0,\n  \"updatedAt\": 0\n}\n```\n",
+    "files": [],
+    "createdAt": 1787150542024,
+    "updatedAt": 1787150542024
   }
 }
